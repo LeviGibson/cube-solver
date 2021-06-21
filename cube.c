@@ -137,6 +137,68 @@ int edge_cycles[18][5] = {
         {-1, 0, 10, 6, 7},
 };
 
+void parse_alg(char *alg){
+    while (*alg){
+        if (*alg == 'R'){
+
+            if (*(alg+1) == '\'')
+                make_move(RP);
+            else if (*(alg+1) == '2')
+                make_move(R2);
+            else
+                make_move(R);
+
+        } else if (*alg == 'U'){
+
+            if (*(alg+1) == '\'')
+                make_move(UP);
+            else if (*(alg+1) == '2')
+                make_move(U2);
+            else
+                make_move(U);
+
+        } else if (*alg == 'F'){
+
+            if (*(alg+1) == '\'')
+                make_move(FP);
+            else if (*(alg+1) == '2')
+                make_move(F2);
+            else
+                make_move(F);
+
+        } else if (*alg == 'L'){
+
+            if (*(alg+1) == '\'')
+                make_move(LP);
+            else if (*(alg+1) == '2')
+                make_move(L2);
+            else
+                make_move(L);
+
+        } else if (*alg == 'D'){
+
+            if (*(alg+1) == '\'')
+                make_move(DP);
+            else if (*(alg+1) == '2')
+                make_move(D2);
+            else
+                make_move(D);
+
+        } else if (*alg == 'B'){
+
+            if (*(alg+1) == '\'')
+                make_move(BP);
+            else if (*(alg+1) == '2')
+                make_move(B2);
+            else
+                make_move(B);
+
+        }
+
+        alg++;
+    }
+}
+
 void make_move(int move){
     U8 corner_buffer[8];
     memcpy(corner_buffer, corners, sizeof corner_buffer);
@@ -183,6 +245,28 @@ void make_move(int move){
         edges[edge_cycles[move][3]] = edge_buffer[edge_cycles[move][4]];
         edges[edge_cycles[move][4]] = edge_buffer[edge_cycles[move][3]];
     }
+}
+
+int is_cube_solved(){
+
+    for (int edgeID = 0; edgeID < 12; edgeID++){
+        if (edgeID != get_piece_index(edges[edgeID])){
+            return 0;
+        }
+        if (get_piece_orientation(edges[edgeID]) != 0){
+            return 0;
+        }
+    }
+    for (int cornerID = 0; cornerID < 8; cornerID++){
+        if (cornerID != get_piece_index(corners[cornerID])){
+            return 0;
+        }
+        if (get_piece_orientation(corners[cornerID]) != 0){
+            return 0;
+        }
+    }
+
+    return 1;
 }
 
 void print_cube(){

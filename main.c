@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdint-gcc.h>
 #include "cube.h"
 
