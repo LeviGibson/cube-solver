@@ -10,6 +10,9 @@
 
 enum{R, L, U, D, F, B, RP, LP, UP, DP, FP, BP, R2, L2, U2, D2, F2, B2};
 
+
+
+
 #define encode_piece(index, orientation) \
     ((index) | ((orientation) << 4))
 
