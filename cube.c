@@ -9,6 +9,9 @@
 U8 corners[8];
 U8 edges[12];
 
+int history[2];
+int history_length = 1;
+
 char corner_colors[8][3] = {
         {'Y', 'R', 'G'},
         {'Y', 'B', 'R'},
@@ -210,7 +213,6 @@ void make_move(int move){
         decrement_corner_orientation(corner_buffer[corner_orientaion_adjustments[move][2]]);
         decrement_corner_orientation(corner_buffer[corner_orientaion_adjustments[move][3]]);
     }
-
     if (corner_cycles[move][0] == 0) {
         corners[corner_cycles[move][1]] = corner_buffer[corner_cycles[move][2]];
         corners[corner_cycles[move][2]] = corner_buffer[corner_cycles[move][3]];
@@ -245,6 +247,8 @@ void make_move(int move){
         edges[edge_cycles[move][3]] = edge_buffer[edge_cycles[move][4]];
         edges[edge_cycles[move][4]] = edge_buffer[edge_cycles[move][3]];
     }
+
+    history[0] = move;
 }
 
 int is_cube_solved(){
@@ -267,6 +271,89 @@ int is_cube_solved(){
     }
 
     return 1;
+}
+
+
+int same_side_moves[18][2] = {
+        {RP, R2},
+        {LP, L2},
+        {UP, U2},
+        {DP, D2},
+        {FP, F2},
+        {BP, B2},
+
+        {R, R2},
+        {L, L2},
+        {U, U2},
+        {D, D2},
+        {F, F2},
+        {B, B2},
+
+        {R, RP},
+        {L, LP},
+        {U, UP},
+        {D, DP},
+        {F, FP},
+        {B, BP}
+};
+
+int parralel_moves[18][3] = {
+        {L, LP, L2},
+        {R, RP, R2},
+        {D, DP, D2},
+        {U, UP, U2},
+        {B, BP, B2},
+        {F, FP, F2},
+
+        {L, LP, L2},
+        {R, RP, R2},
+        {D, DP, D2},
+        {U, UP, U2},
+        {B, BP, B2},
+        {F, FP, F2},
+
+        {L, LP, L2},
+        {R, RP, R2},
+        {D, DP, D2},
+        {U, UP, U2},
+        {B, BP, B2},
+        {F, FP, F2},
+};
+
+int is_repetition(int move){
+    if (same_side_moves[history[0]][0] == move)
+        return 1;
+    if (same_side_moves[history[0]][1] == move)
+        return 1;
+    if (history[0] == move)
+        return 1;
+
+    return 0;
+}
+
+const char *move_chars[] = {
+        "R ",
+        "L ",
+        "U ",
+        "D ",
+        "F ",
+        "B ",
+        "R'",
+        "L'",
+        "U'",
+        "D'",
+        "F'",
+        "B'",
+        "R2",
+        "L2",
+        "U2",
+        "D2",
+        "F2",
+        "B2"
+};
+
+void print_move(int move){
+    printf("%s", move_chars[move]);
 }
 
 void print_cube(){
