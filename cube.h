@@ -43,25 +43,25 @@ enum{R, L, U, D, F, B, RP, LP, UP, DP, FP, BP, R2, L2, U2, D2, F2, B2};
 #define copy_cube() \
     U8 corners_copy[8];   \
     U8 edges_copy[12];    \
-    int history_copy[2];    \
-    int history_length_copy = history_length; \
-    memcpy(history_copy, history, sizeof history_copy);   \
+    int history_copy;    \
+    history_copy = history;   \
     memcpy(edges_copy, edges, sizeof(edges_copy)); \
     memcpy(corners_copy, corners, sizeof(corners_copy)) \
 
 #define paste_cube() \
     memcpy(edges, edges_copy, sizeof edges); \
     memcpy(corners, corners_copy, sizeof corners); \
-    memcpy(history, history_copy, sizeof history); \
-    history_length = history_length_copy
+    history = history_copy; \
 
 U8 corners[8];
 U8 edges[12];
 
-int history[2];
+int history;
 int history_length;
 
 void init_cube();
+
+void reset_cube_history();
 
 void make_move(int move);
 

@@ -5,11 +5,12 @@
 #include <stdio.h>
 #include <string.h>
 #include "cube.h"
+#include "easySolutions.h"
 
 U8 corners[8];
 U8 edges[12];
 
-int history[2];
+int history;
 int history_length = 1;
 
 char corner_colors[8][3] = {
@@ -163,6 +164,10 @@ int edge_cycles[18][5] = {
         {-1, 0, 10, 6, 7},
 };
 
+void reset_cube_history(){
+    history = -1;
+}
+
 void parse_alg(char *alg){
     while (*alg){
         if (*alg == 'R'){
@@ -271,7 +276,7 @@ void make_move(int move){
         edges[edge_cycles[move][4]] = edge_buffer[edge_cycles[move][3]];
     }
 
-    history[0] = move;
+    history = move;
 }
 
 int is_cube_solved(){
@@ -296,7 +301,7 @@ int is_cube_solved(){
     return 1;
 }
 
-
+//R, L, U, D, F, B, RP, LP, UP, DP, FP, BP, R2, L2, U2, D2, F2, B2
 int same_side_moves[18][2] = {
         {RP, R2},
         {LP, L2},
@@ -344,11 +349,11 @@ int parralel_moves[18][3] = {
 };
 
 int is_repetition(int move){
-    if (same_side_moves[history[0]][0] == move)
+    if (same_side_moves[history][0] == move)
         return 1;
-    if (same_side_moves[history[0]][1] == move)
+    if (same_side_moves[history][1] == move)
         return 1;
-    if (history[0] == move)
+    if (history == move)
         return 1;
 
     return 0;
@@ -361,10 +366,11 @@ void generate_corner_twists(){
     }
 }
 
-
-
 void print_move(int move){
-    printf("%s", move_chars[move]);
+    if (move_chars[move][1] == ' ')
+        printf("%c", move_chars[move][0]);
+    else
+        printf("%s", move_chars[move]);
 }
 
 void print_cube(){
@@ -414,6 +420,8 @@ void init_cube(){
     }
 
     generate_corner_twists();
+    init_key_generator();
+    init_magic_hashes();
 }
 
 void print_piece_binary(U8 piece){
