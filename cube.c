@@ -39,6 +39,29 @@ char edge_colors[12][2] = {
         {'W', 'G'},
 };
 
+const char *move_chars[] = {
+        "R ",
+        "L ",
+        "U ",
+        "D ",
+        "F ",
+        "B ",
+        "R'",
+        "L'",
+        "U'",
+        "D'",
+        "F'",
+        "B'",
+        "R2",
+        "L2",
+        "U2",
+        "D2",
+        "F2",
+        "B2"
+};
+
+U8 corner_twists[64][2];
+
 int corner_orientaion_adjustments[18][4] = {
         {2, 6, 5, 1},
         {0, 4, 3, 7},
@@ -331,26 +354,14 @@ int is_repetition(int move){
     return 0;
 }
 
-const char *move_chars[] = {
-        "R ",
-        "L ",
-        "U ",
-        "D ",
-        "F ",
-        "B ",
-        "R'",
-        "L'",
-        "U'",
-        "D'",
-        "F'",
-        "B'",
-        "R2",
-        "L2",
-        "U2",
-        "D2",
-        "F2",
-        "B2"
-};
+void generate_corner_twists(){
+    for (U8 i = 0; i < 64; i++){
+        corner_twists[i][1] = increment_corner_orientation_otf(i);
+        corner_twists[i][0] = decrement_corner_orientation_otf(i);
+    }
+}
+
+
 
 void print_move(int move){
     printf("%s", move_chars[move]);
@@ -401,6 +412,8 @@ void init_cube(){
     for (int i = 0; i < 12; i++){
         edges[i] = encode_piece(i, 0);
     }
+
+    generate_corner_twists();
 }
 
 void print_piece_binary(U8 piece){

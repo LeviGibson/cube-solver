@@ -7,6 +7,8 @@
 
 #include <stdint-gcc.h>
 #define U8 uint8_t
+#define U64 unsigned long long
+#define U32 unsigned int
 
 enum{R, L, U, D, F, B, RP, LP, UP, DP, FP, BP, R2, L2, U2, D2, F2, B2};
 
@@ -16,10 +18,25 @@ enum{R, L, U, D, F, B, RP, LP, UP, DP, FP, BP, R2, L2, U2, D2, F2, B2};
 #define get_piece_index(piece) ((piece) & 15)
 #define get_piece_orientation(piece) ((piece) >> 4)
 
+/**
 #define increment_corner_orientation(corner) \
     corner = (encode_piece(get_piece_index((corner)), (get_piece_orientation((corner)) + 1)%3))
+
 #define decrement_corner_orientation(corner) \
-    corner = (encode_piece(get_piece_index((corner)), (get_piece_orientation((corner)) + 2)%3))
+    corner = (encode_piece(get_piece_index((corner)), (get_piece_orientation((corner)) + 2)%3))**/
+
+#define increment_corner_orientation(corner) \
+    corner = corner_twists[corner][1]
+
+#define decrement_corner_orientation(corner) \
+    corner = corner_twists[corner][0]
+
+#define increment_corner_orientation_otf(corner) \
+    (encode_piece(get_piece_index((corner)), (get_piece_orientation((corner)) + 1)%3))
+
+#define decrement_corner_orientation_otf(corner) \
+    (encode_piece(get_piece_index((corner)), (get_piece_orientation((corner)) + 2)%3))
+
 #define flip_edge(edge) \
     edge = (edge) ^ 16
 
