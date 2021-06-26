@@ -8,12 +8,11 @@
 int main() {
     init_cube();
 
-    parse_alg("F U2 L2 B2 F' U L2 U R2 D2 L' B L2 B' R2 U2");
+    parse_alg("B R2 U2 L2 F D2 B' U2 L2 B' R2 L' B' F U' L' D L R' D2 U2");
 
-    //parse_alg("R2 U R2 U' L2");
     reset_cube_history();
 
-    search_position();
+    search_position(0);
 
     return 0;
 }

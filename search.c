@@ -19,7 +19,7 @@ int move_restrictions[4][18] = {
         {1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
         {0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
         {0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
-};
+       };
 
 static inline int are_edges_oriented(){
     for (int edge = 0; edge < 12; edge++){
@@ -117,9 +117,10 @@ static inline int search(int depth, int alpha, line *pline){
 int full_solution_length;
 int full_solution[64];
 
-void iterative_deepening(line *pv){
+void iterative_deepening(line *pv, int io){
     for (int currentDepth = 0; currentDepth < 30; currentDepth++){
-        printf("depth: %d\n", currentDepth);
+        if (io)
+            printf("depth: %d\n", currentDepth);
         int eval = search(currentDepth, -1, pv);
         if (eval > 0){
             break;
@@ -127,15 +128,18 @@ void iterative_deepening(line *pv){
     }
     for (int move = 0; move < pv->length; move++) {
         make_move((int)pv->moves[move]);
-        print_move((int)pv->moves[move]);
         full_solution[full_solution_length] = (int)pv->moves[move];
         full_solution_length++;
-        printf(" ");
+        if (io) {
+            print_move((int) pv->moves[move]);
+            printf(" ");
+        }
     }
-    printf("\n");
+    if (io)
+        printf("\n");
 }
 
-void search_position(){
+void search_position(int io){
     ply = 0;
     memset(full_solution, 0, sizeof full_solution);
     full_solution_length = 0;
@@ -144,20 +148,21 @@ void search_position(){
     pv.length = 0;
 
     search_type = eo_search;
-    iterative_deepening(&pv);
+    iterative_deepening(&pv, io);
 
     search_type = G1_search;
-    iterative_deepening(&pv);
+    iterative_deepening(&pv, io);
 
     search_type = es_search;
-    iterative_deepening(&pv);
+    iterative_deepening(&pv, io);
 
     search_type = solve_search;
-    iterative_deepening(&pv);
+    iterative_deepening(&pv, io);
 
-    printf("\n\nSolved!\n");
+    printf("Solved in %d Moves!\n", full_solution_length);
     for (int i = 0; i < full_solution_length; i++) {
         print_move(full_solution[i]);
         printf(" ");
     }
+    printf("\n");
 }

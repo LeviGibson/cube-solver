@@ -11,7 +11,6 @@ U8 corners[8];
 U8 edges[12];
 
 int history;
-int history_length = 1;
 
 char corner_colors[8][3] = {
         {'Y', 'R', 'G'},
@@ -349,6 +348,7 @@ int parralel_moves[18][3] = {
 };
 
 int is_repetition(int move){
+
     if (same_side_moves[history][0] == move)
         return 1;
     if (same_side_moves[history][1] == move)

@@ -7,15 +7,15 @@
 #include <stdlib.h>
 #include "easySolutions.h"
 
+#define simple_solution_hash_size 348522
+
 U64 corner_keys[8][64];
 U64 edge_keys[12][32];
-
-int hash_length = 5;
 int four_move_hashes_found = 0;
-U64 simple_position_hashes[100000];
+
+U64 simple_solution_hashes[simple_solution_hash_size];
 
 const int domino_restrictions[18] = {0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1};
-
 
 U64 get_random_U64(){
     U64 rando = 0ULL;
@@ -40,11 +40,11 @@ int cube_has_simple_solution(){
     U64 key = get_cube_key();
 
     int lower_bound = 0;
-    int upper_bound = 100000;
+    int upper_bound = simple_solution_hash_size;
 
     while (1){
         int guess_id = (lower_bound + upper_bound)/2;
-        U64 guess = simple_position_hashes[guess_id];
+        U64 guess = simple_solution_hashes[guess_id];
         if (key > guess){
             lower_bound = guess_id;
         } else if (key < guess){
@@ -53,26 +53,26 @@ int cube_has_simple_solution(){
             return 1;
         }
 
-        if ((upper_bound - lower_bound) <= 1){
-            if (simple_position_hashes[upper_bound] == key)
-                return 1;
-            if (simple_position_hashes[lower_bound] == key)
-                return 1;
+        if (simple_solution_hashes[upper_bound] == key)
+            return 1;
+        if (simple_solution_hashes[lower_bound] == key)
+            return 1;
+        if (upper_bound - lower_bound < 2){
             return 0;
         }
     }
 
     /**
     for (int i = 0; i < 100000; i++){
-        //printf("%ud\n", simple_position_hashes[i]);
-        if (key == simple_position_hashes[i])
+        //printf("%ud\n", simple_solution_hashes[i]);
+        if (key == simple_solution_hashes[i])
             return 1;
     }**/
 }
 
 void find_hashable_positions(int depth){
     if (depth == 0){
-        simple_position_hashes[four_move_hashes_found] = get_cube_key();
+        simple_solution_hashes[four_move_hashes_found] = get_cube_key();
         four_move_hashes_found++;
         return;
     }
@@ -80,7 +80,7 @@ void find_hashable_positions(int depth){
     copy_cube();
 
     for (int move = 0; move < 18; move++){
-        if (domino_restrictions[move]){
+        if (domino_restrictions[move] && (!is_repetition(move))){
             make_move(move);
 
             find_hashable_positions(depth-1);
@@ -100,8 +100,13 @@ int compare( const void* a, const void* b)
 }
 
 void init_magic_hashes(){
-    find_hashable_positions(5);
-    qsort( simple_position_hashes, 100000, sizeof(U64), compare);
+    for (int i = 0; i <= 6; i++) {
+        history = -1;
+        find_hashable_positions(i);
+    }
+
+    qsort(simple_solution_hashes, simple_solution_hash_size, sizeof(U64), compare);
+    printf("Found %d hashable positionsn\n\n", four_move_hashes_found);
 }
 
 void init_key_generator(){

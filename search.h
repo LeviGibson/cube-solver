@@ -13,6 +13,6 @@ typedef struct LINE {
     int length;
 } line;
 
-void search_position();
+void search_position(int io);
 
 #endif //CUBE_SOLVER_SEARCH_H

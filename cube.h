@@ -57,7 +57,6 @@ U8 corners[8];
 U8 edges[12];
 
 int history;
-int history_length;
 
 void init_cube();
 
