@@ -7,7 +7,7 @@
 
 #include "cube.h"
 void init_key_generator();
-void init_magic_hashes();
+void init_easy_solutions();
 
 int cube_has_simple_solution();
 U64 get_cube_key();

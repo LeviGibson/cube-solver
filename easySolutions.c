@@ -17,12 +17,6 @@ U64 simple_solution_hashes[simple_solution_hash_size];
 
 const int domino_restrictions[18] = {0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1};
 
-U64 get_random_U64(){
-    U64 rando = 0ULL;
-    rando |= (U64)rand();
-    rando |= ((U64)rand() << 32);
-    return rando;
-}
 
 U64 get_cube_key(){
     U64 key = 0;
@@ -70,7 +64,7 @@ int cube_has_simple_solution(){
     }**/
 }
 
-void find_hashable_positions(int depth){
+void find_hashable_solutions(int depth){
     if (depth == 0){
         simple_solution_hashes[four_move_hashes_found] = get_cube_key();
         four_move_hashes_found++;
@@ -83,7 +77,7 @@ void find_hashable_positions(int depth){
         if (domino_restrictions[move] && (!is_repetition(move))){
             make_move(move);
 
-            find_hashable_positions(depth-1);
+            find_hashable_solutions(depth - 1);
             paste_cube();
         }
     }
@@ -99,14 +93,14 @@ int compare( const void* a, const void* b)
     else return 1;
 }
 
-void init_magic_hashes(){
+void init_easy_solutions(){
     for (int i = 0; i <= 6; i++) {
         history = -1;
-        find_hashable_positions(i);
+        find_hashable_solutions(i);
     }
 
     qsort(simple_solution_hashes, simple_solution_hash_size, sizeof(U64), compare);
-    printf("Found %d hashable positionsn\n\n", four_move_hashes_found);
+    printf("Found %d hashable solutions\n", four_move_hashes_found);
 }
 
 void init_key_generator(){

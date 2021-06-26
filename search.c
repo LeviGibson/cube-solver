@@ -4,19 +4,25 @@
 
 #include "search.h"
 #include "easySolutions.h"
+#include "easyDominoes.h"
 #include <string.h>
 #include <stdio.h>
 
-enum {eo_search, G1_search, es_search, solve_search};
+enum {eo_search, ed_search, dr_search, es_search, solve_search};
 
 int best_move;
 int ply;
 int search_type;
 
        //R, L, U, D, F, B, RP, LP, UP, DP, FP, BP, R2, L2, U2, D2, F2, B2
-int move_restrictions[4][18] = {
+int move_restrictions[5][18] = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+
+        //{1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+        //{1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+
         {0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
         {0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
        };
@@ -62,7 +68,10 @@ static inline int is_search_condition_met(){
     if (search_type == eo_search){
         return are_edges_oriented();
     }
-    if (search_type == G1_search){
+    if (search_type == ed_search){
+        return cube_has_simple_domino();
+    }
+    if (search_type == dr_search){
         return is_domino_reduction();
     }
     if (search_type == solve_search){
@@ -139,7 +148,7 @@ void iterative_deepening(line *pv, int io){
         printf("\n");
 }
 
-void search_position(int io){
+int search_position(int io){
     ply = 0;
     memset(full_solution, 0, sizeof full_solution);
     full_solution_length = 0;
@@ -147,10 +156,13 @@ void search_position(int io){
     line pv;
     pv.length = 0;
 
-    search_type = eo_search;
+    //search_type = eo_search;
+    //iterative_deepening(&pv, io);
+
+    search_type = ed_search;
     iterative_deepening(&pv, io);
 
-    search_type = G1_search;
+    search_type = dr_search;
     iterative_deepening(&pv, io);
 
     search_type = es_search;
@@ -165,4 +177,6 @@ void search_position(int io){
         printf(" ");
     }
     printf("\n");
+
+    return full_solution_length;
 }

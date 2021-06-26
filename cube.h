@@ -71,6 +71,7 @@ int is_repetition(int move);
 
 void print_move(int move);
 void print_cube();
+U64 get_random_U64();
 void print_piece_binary(U8 piece);
 
 #endif //CFOPSOLVER_CUBE_H

@@ -4,8 +4,10 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "cube.h"
 #include "easySolutions.h"
+#include "easyDominoes.h"
 
 U8 corners[8];
 U8 edges[12];
@@ -421,7 +423,15 @@ void init_cube(){
 
     generate_corner_twists();
     init_key_generator();
-    init_magic_hashes();
+    init_easy_solutions();
+    init_easy_dominos();
+}
+
+U64 get_random_U64(){
+    U64 rando = 0ULL;
+    rando |= (U64)rand();
+    rando |= ((U64)rand() << 32);
+    return rando;
 }
 
 void print_piece_binary(U8 piece){
