@@ -22,7 +22,7 @@ char* testScrambles[10][100] = {
 int main() {
     init_cube();
 
-    parse_alg("U2 F' D F2 R2 B L R2 U' F2 B2 R2 D F2 B2 D L2 B2 L B R");
+    parse_alg("L' F' B2 U2 B' D' L' B R2 B2 D F2 L2 U L2 U2 D R");
     reset_cube_history();
     search_position(1);
 

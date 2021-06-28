@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include "easySolutions.h"
 
-#define simple_solution_hash_size 348522
+#define simple_solution_hash_size 21745698
 
 U64 corner_keys[8][64];
 U64 edge_keys[12][32];
@@ -94,7 +94,7 @@ int compare( const void* a, const void* b)
 }
 
 void init_easy_solutions(){
-    for (int i = 0; i <= 6; i++) {
+    for (int i = 0; i <= 8; i++) {
         history = -1;
         find_hashable_solutions(i);
     }

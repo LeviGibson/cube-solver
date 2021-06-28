@@ -51,7 +51,7 @@ enum{R, L, U, D, F, B, RP, LP, UP, DP, FP, BP, R2, L2, U2, D2, F2, B2};
 #define paste_cube() \
     memcpy(edges, edges_copy, sizeof edges); \
     memcpy(corners, corners_copy, sizeof corners); \
-    history = history_copy; \
+    history = history_copy \
 
 U8 corners[8];
 U8 edges[12];

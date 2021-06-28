@@ -43,15 +43,6 @@ static inline int are_corners_oriented(){
     return 1;
 }
 
-static inline int num_edges_oriented(){
-    int num = 0;
-    for (int corner = 0; corner < 8; corner++){
-        if (get_piece_orientation(corners[corner]) == 0)
-            num++;
-    }
-    return num;
-}
-
 static inline int is_domino_reduction(){
 
     for (int edge = 4; edge < 8; edge++){
@@ -64,21 +55,26 @@ static inline int is_domino_reduction(){
     return are_corners_oriented();
 }
 
-static inline int is_search_condition_met(){
+static inline int is_search_condition_met(line *pv){
     if (search_type == eo_search){
-        return are_edges_oriented();
+        return (are_edges_oriented()) ? (SOLVESCORE - ply) : 0;
     }
     if (search_type == ed_search){
-        return cube_has_simple_domino();
+        return (cube_has_simple_domino()) ? (SOLVESCORE - ply) : 0;
     }
     if (search_type == dr_search){
-        return is_domino_reduction();
+        //return (is_domino_reduction()) ? (SOLVESCORE - ply) : 0;
+        if (is_domino_reduction()){
+            search_type = es_search;
+            iterative_deepening(pv, 0);
+            return 1;
+        }
     }
     if (search_type == solve_search){
-        return is_cube_solved();
+        return (is_cube_solved()) ? (SOLVESCORE - ply) : 0;
     }
     if (search_type == es_search){
-        return cube_has_simple_solution();
+        return (cube_has_simple_solution()) ? (SOLVESCORE - ply) : 0;
     }
     return 0;
 }
@@ -86,7 +82,7 @@ static inline int is_search_condition_met(){
 static inline int search(int depth, int alpha, line *pline){
 
     if (depth == 0){
-        if (is_search_condition_met()){
+        if (is_search_condition_met(pline)){
             pline->length = 0;
             return(SOLVESCORE - ply);
         }
@@ -117,7 +113,6 @@ static inline int search(int depth, int alpha, line *pline){
                 if (eval > 0)
                     return eval;
             }
-
         }
     }
     return alpha;
@@ -165,8 +160,8 @@ int search_position(int io){
     search_type = dr_search;
     iterative_deepening(&pv, io);
 
-    search_type = es_search;
-    iterative_deepening(&pv, io);
+    //search_type = es_search;
+    //iterative_deepening(&pv, io);
 
     search_type = solve_search;
     iterative_deepening(&pv, io);
