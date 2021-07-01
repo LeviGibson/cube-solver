@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include "easyDominoes.h"
 
-#define easy_domino_hash_size 922098
+#define easy_domino_hash_size 13831474
 
 U64 domino_corner_keys[8][64];
 U64 domino_edge_keys[12][32];
@@ -50,7 +50,7 @@ int compare_dom( const void* a, const void* b)
 }
 
 void init_easy_domino_array(){
-    for (int i = 0; i <= 5; i++) {
+    for (int i = 0; i <= 6; i++) {
         find_hashable_dominos(i);
     }
 

@@ -18,13 +18,12 @@ char* testScrambles[10][100] = {
         "R' B2 D' L2 R2 F2 U' B2 D' L2 R2 B' D F2 D U2 F' L' B R'",
         "L' D' B L2 U' R2 L B2 U' B2 L2 U' R2 D F2 U2 B2 F R2"
 };
-
 int main() {
     init_cube();
 
-    parse_alg("L' F' B2 U2 B' D' L' B R2 B2 D F2 L2 U L2 U2 D R");
+    parse_alg("L2 U2 B' R' U' B' U2 R' B2 D B2 R2 B2 U2 B2 L2 U2 R2");
     reset_cube_history();
-    search_position(1);
+    search_position(0);
 
     return 0;
 }

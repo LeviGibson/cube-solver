@@ -8,13 +8,14 @@
 #include "cube.h"
 #include <immintrin.h>
 #define SOLVESCORE 50000
+#define FAIL_LOW 25000
 
 typedef struct LINE {
-    U8 moves[64];
-    int length;
+    U8 moves[4][32];
+    int length[4];
 } line;
 
-void iterative_deepening(line *pv, int io);
+int iterative_deepening(line *pv, int io, int make_moves);
 int search_position(int io);
 
 static inline int get_time_ms()
