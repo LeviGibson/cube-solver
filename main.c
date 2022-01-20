@@ -21,9 +21,10 @@ char* testScrambles[10][100] = {
 int main() {
     init_cube();
 
-    parse_alg("L2 U2 B' R' U' B' U2 R' B2 D B2 R2 B2 U2 B2 L2 U2 R2");
+    parse_alg("R U R' U' R' F R2");
+    print_cube();
     reset_cube_history();
-    search_position(0);
+    search_position();
 
     return 0;
 }

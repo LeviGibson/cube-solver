@@ -10,6 +10,7 @@
 #define U64 unsigned long long
 #define U32 unsigned int
 
+int handpos;
 enum{R, L, U, D, F, B, RP, LP, UP, DP, FP, BP, R2, L2, U2, D2, F2, B2};
 
 #define encode_piece(index, orientation) \
@@ -43,7 +44,8 @@ enum{R, L, U, D, F, B, RP, LP, UP, DP, FP, BP, R2, L2, U2, D2, F2, B2};
 #define copy_cube() \
     U8 corners_copy[8];   \
     U8 edges_copy[12];    \
-    int history_copy;    \
+    int history_copy;     \
+    int handpos_copy = handpos;                \
     history_copy = history;   \
     memcpy(edges_copy, edges, sizeof(edges_copy)); \
     memcpy(corners_copy, corners, sizeof(corners_copy)) \
@@ -51,6 +53,7 @@ enum{R, L, U, D, F, B, RP, LP, UP, DP, FP, BP, R2, L2, U2, D2, F2, B2};
 #define paste_cube() \
     memcpy(edges, edges_copy, sizeof edges); \
     memcpy(corners, corners_copy, sizeof corners); \
+    handpos = handpos_copy;                 \
     history = history_copy \
 
 U8 corners[8];
