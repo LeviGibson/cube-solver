@@ -165,6 +165,8 @@ int edge_cycles[18][5] = {
         {-1, 0, 10, 6, 7},
 };
 
+int orderedMoves[18] = {R, RP, R2, U, UP, U2, F, FP, F2, D, DP, D2, L, LP, L2, B, BP, B2};
+
 void reset_cube_history(){
     history = -1;
     history2 = -1;
