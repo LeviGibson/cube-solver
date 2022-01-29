@@ -17,7 +17,6 @@ U64 simple_solution_hashes[simple_solution_hash_size];
 
 const int domino_restrictions[18] = {0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1};
 
-
 U64 get_cube_key(){
     U64 key = 0;
     for (int corner = 0; corner < 8; corner++){
@@ -31,10 +30,7 @@ U64 get_cube_key(){
 }
 
 int cmpfunc(const void * a, const void * b) {
-//    return (int)(*(U64*)a - *(U64*)b);
-    if (*(U64*)a == *(U64*)b) return 0;
-    if (*(U64*)a > *(U64*)b) return 1;
-    return -1;
+    return (int)(*(U64*)a - *(U64*)b);
 }
 
 int cube_has_simple_solution() {

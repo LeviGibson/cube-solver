@@ -76,7 +76,7 @@ int search_position(){
     memset(searchPath, 0, sizeof searchPath);
     reset_cube_history();
 
-    for (int currentDepth = 0; currentDepth < 6; ++currentDepth) {
+    for (int currentDepth = 0; currentDepth < MAX_PLY; ++currentDepth) {
         printf("depth %d\n", currentDepth);
         search((float)currentDepth, 0);
     }
