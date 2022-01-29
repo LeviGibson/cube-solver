@@ -45,8 +45,8 @@ void search(float depth, int extention){
     int searchPathCopy[MAX_PLY];
     memcpy(searchPathCopy, searchPath, sizeof(searchPath));
 
-    for (int id = R; id <= B2; id++) {
-        int move = orderedMoves[id];
+    for (int move = R; move <= B2; move++) {
+//        int move = orderedMoves[id];
 
         if (full_is_repetition(move))
             continue;

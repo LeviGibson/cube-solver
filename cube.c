@@ -280,6 +280,7 @@ void make_move(int move){
         edges[edge_cycles[move][4]] = edge_buffer[edge_cycles[move][3]];
     }
 
+    history2 = history;
     history = move;
 }
 

@@ -46,7 +46,8 @@ int orderedMoves[18];
     U8 corners_copy[8];   \
     U8 edges_copy[12];    \
     int history_copy;     \
-    int handpos_copy = handpos;                \
+    int handpos_copy = handpos; \
+    int history2_copy = history2;\
     history_copy = history;   \
     memcpy(edges_copy, edges, sizeof(edges_copy)); \
     memcpy(corners_copy, corners, sizeof(corners_copy)) \
@@ -54,6 +55,7 @@ int orderedMoves[18];
 #define paste_cube() \
     memcpy(edges, edges_copy, sizeof edges); \
     memcpy(corners, corners_copy, sizeof corners); \
+    history2 = history2_copy;\
     handpos = handpos_copy;                 \
     history = history_copy \
 
