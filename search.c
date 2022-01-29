@@ -35,7 +35,7 @@ void search(float depth, int extention){
 //            print_move(searchPath[i]);
 //            printf(" ");
 //        }
-//        printf("\n");
+//        printf("\n\n");
         depth += 7;
         extention = 1;
     }
@@ -45,7 +45,6 @@ void search(float depth, int extention){
     memcpy(searchPathCopy, searchPath, sizeof(searchPath));
 
     for (int move = R; move <= B2; move++) {
-//        int move = orderedMoves[id];
 
         if (full_is_repetition(move))
             continue;
@@ -73,10 +72,10 @@ int search_position(){
     ply = 0;
     handpos = 0;
     memset(searchPath, 0, sizeof searchPath);
-    reset_cube_history();
 
     for (int currentDepth = 0; currentDepth < MAX_PLY; ++currentDepth) {
         printf("depth %d\n", currentDepth);
+        reset_cube_history();
         search((float)currentDepth, 0);
     }
 }
