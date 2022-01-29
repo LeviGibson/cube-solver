@@ -16,7 +16,6 @@ int ply;
 
 void search(float depth, int extention){
     if (is_cube_solved()) {
-//        printf("found solution at ply %d\n", ply);
         for (int i = 0; i < ply; ++i) {
             print_move(searchPath[i]);
             printf(" ");
@@ -30,7 +29,7 @@ void search(float depth, int extention){
     }
 
     if (!extention && cube_has_simple_solution()){
-//        printf("found easty solution at ply %d\n", ply);
+//        printf("found easty solution at ply %d with hash %llx\n", ply, get_cube_key());
 //        for (int i = 0; i < ply; ++i) {
 //            print_move(searchPath[i]);
 //            printf(" ");

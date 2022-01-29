@@ -1,11 +1,10 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdint-gcc.h>
 #include "cube.h"
 #include "search.h"
+#include "easySolutions.h"
 
 int main() {
     init_cube();
+    init_easy_solutions();
 
     parse_alg("R U R' U' R' F R2 U' R' U' R U R' F'");
     print_cube();

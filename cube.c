@@ -451,7 +451,6 @@ void init_cube(){
 
     generate_corner_twists();
     init_key_generator();
-    init_easy_solutions();
 //    init_easy_dominos();
 }
 
