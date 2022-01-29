@@ -11,7 +11,6 @@
 #define UNSOLVED 5000
 
 //enum{R, L, U, D, F, B, RP, LP, UP, DP, FP, BP, R2, L2, U2, D2, F2, B2};
-int movesides[18] = {R, L, U, D, F, B, R, L, U, D, F, B, R, L, U, D, F, B};
 
 int searchPath[MAX_PLY];
 int ply;
@@ -77,7 +76,7 @@ int search_position(){
     memset(searchPath, 0, sizeof searchPath);
     reset_cube_history();
 
-    for (int currentDepth = 0; currentDepth < MAX_PLY; ++currentDepth) {
+    for (int currentDepth = 0; currentDepth < 6; ++currentDepth) {
         printf("depth %d\n", currentDepth);
         search((float)currentDepth, 0);
     }
