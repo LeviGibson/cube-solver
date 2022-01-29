@@ -7,7 +7,6 @@
 #include <stdlib.h>
 #include "cube.h"
 #include "easySolutions.h"
-#include "easyDominoes.h"
 
 U8 corners[8];
 U8 edges[12];

@@ -4,7 +4,6 @@
 
 #include "search.h"
 #include "easySolutions.h"
-#include "easyDominoes.h"
 #include <string.h>
 #include <stdio.h>
 
