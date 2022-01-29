@@ -167,6 +167,7 @@ int edge_cycles[18][5] = {
 
 void reset_cube_history(){
     history = -1;
+    history2 = -1;
 }
 
 void parse_alg(char *alg){
@@ -348,6 +349,31 @@ int parralel_moves[18][3] = {
         {B, BP, B2},
         {F, FP, F2},
 };
+
+int full_is_repetition(int move){
+    if (history == -1) return 0;
+
+    if (same_side_moves[history][0] == move)
+        return 1;
+    if (same_side_moves[history][1] == move)
+        return 1;
+    if (history == move)
+        return 1;
+
+    if (parralel_moves[history][0] == history2 ||
+        parralel_moves[history][1] == history2 ||
+        parralel_moves[history][2] == history2){
+
+        if (same_side_moves[history2][0] == move)
+            return 1;
+        if (same_side_moves[history2][1] == move)
+            return 1;
+        if (history2 == move)
+            return 1;
+    }
+
+    return 0;
+}
 
 int simple_is_repetition(int move){
 

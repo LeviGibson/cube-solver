@@ -47,7 +47,7 @@ void search(float depth, int extention){
     memcpy(searchPathCopy, searchPath, sizeof(searchPath));
 
     for (int move = R; move <= B2; move++) {
-        if (simple_is_repetition(move))
+        if (full_is_repetition(move))
             continue;
 
         make_move(move);

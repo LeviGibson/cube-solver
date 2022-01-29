@@ -71,6 +71,7 @@ void make_move(int move);
 void parse_alg(char *alg);
 
 int is_cube_solved();
+int full_is_repetition(int move);
 int simple_is_repetition(int move);
 
 void print_move(int move);
