@@ -349,7 +349,7 @@ int parralel_moves[18][3] = {
         {F, FP, F2},
 };
 
-int is_repetition(int move){
+int simple_is_repetition(int move){
 
     if (same_side_moves[history][0] == move)
         return 1;

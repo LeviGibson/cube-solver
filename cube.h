@@ -60,6 +60,7 @@ U8 corners[8];
 U8 edges[12];
 
 int history;
+int history2;
 
 void init_cube();
 
@@ -70,7 +71,7 @@ void make_move(int move);
 void parse_alg(char *alg);
 
 int is_cube_solved();
-int is_repetition(int move);
+int simple_is_repetition(int move);
 
 void print_move(int move);
 void print_cube();

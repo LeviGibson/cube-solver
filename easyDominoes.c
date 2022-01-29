@@ -30,7 +30,7 @@ void find_hashable_dominos(int depth){
     copy_cube();
 
     for (int move = 0; move < 18; move++){
-        if (!is_repetition(move)){
+        if (!simple_is_repetition(move)){
             make_move(move);
 
             find_hashable_dominos(depth - 1);

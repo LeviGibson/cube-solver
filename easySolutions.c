@@ -74,7 +74,7 @@ void find_hashable_solutions(int depth){
     copy_cube();
 
     for (int move = 0; move < 18; move++){
-        if (domino_restrictions[move] && (!is_repetition(move))){
+        if (domino_restrictions[move] && (!simple_is_repetition(move))){
             make_move(move);
 
             find_hashable_solutions(depth - 1);

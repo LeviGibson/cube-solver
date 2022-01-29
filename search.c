@@ -32,7 +32,13 @@ void search(float depth, int extention){
     }
 
     if (!extention && cube_has_simple_solution()){
-        depth += 8;
+//        printf("found easty solution at ply %d\n", ply);
+//        for (int i = 0; i < ply; ++i) {
+//            print_move(searchPath[i]);
+//            printf(" ");
+//        }
+//        printf("\n");
+        depth += 7;
         extention = 1;
     }
 
@@ -41,35 +47,16 @@ void search(float depth, int extention){
     memcpy(searchPathCopy, searchPath, sizeof(searchPath));
 
     for (int move = R; move <= B2; move++) {
-//        if (move == R)
-//            handpos++;
-//        if (move == RP)
-//            handpos--;
-//        if (abs(handpos) > 1) {
-//            handpos = handpos_copy;
-//            continue;
-//        }
-//        if (move == R2) {
-//            if (handpos == 0) {
-//                handpos = handpos_copy;
-//                continue;
-//            }
-//            handpos = -handpos;
-//        }
-//
-//        int ds = 0;
-//        if (movesides[move] == B)
-//            ds = 6;
-//        if (movesides[move] == F) {
-//            if (handpos == -1)
-//                ds = 1;
-//            else
-//                ds = 2;
-//        }
-//        if (movesides[move] == L)
-//            ds = 2;
+        if (simple_is_repetition(move))
+            continue;
 
         make_move(move);
+
+        if (extention && !cube_has_simple_solution()) {
+            paste_cube();
+            continue;
+        }
+
         searchPath[ply] = move;
 
         ply++;
