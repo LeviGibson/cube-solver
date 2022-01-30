@@ -13,7 +13,8 @@ U64 corner_keys[8][64][64];
 U64 edge_keys[12][32][32];
 int four_move_hashes_found = 0;
 
-U64 simple_solution_hashes[simple_solution_hash_size];
+U64 simple_solution_hashes[simple_solution_hash_size][4];
+uint8_t simple_solution_counts[simple_solution_hash_size];
 
 U64 get_cube_key() {
     U64 key = 0;
@@ -36,12 +37,22 @@ int cmpfunc(const void *a, const void *b) {
 
 int cube_has_simple_solution() {
     U64 key = get_cube_key();
-    int *id = (int*)bsearch((void*)&key, simple_solution_hashes, simple_solution_hash_size, sizeof(U64), cmpfunc);
-    return id != NULL;
+    U64 index = key % simple_solution_hash_size;
+
+    for (int i = 0; i < 4; ++i) {
+        if (simple_solution_hashes[index][i] == key)
+            return 1;
+    }
+    return 0;
+
+//    int *id = (int*)bsearch((void*)&key, simple_solution_hashes, simple_solution_hash_size, sizeof(U64), cmpfunc);
 }
 
 void find_hashable_solutions(int depth) {
-    simple_solution_hashes[four_move_hashes_found] = get_cube_key();
+    U64 key = get_cube_key();
+    U64 index = key % simple_solution_hash_size;
+    simple_solution_hashes[index][simple_solution_counts[index]] = key;
+    simple_solution_counts[index]++;
     four_move_hashes_found++;
 
     if (depth == 0) {
@@ -62,13 +73,12 @@ void find_hashable_solutions(int depth) {
 
 
 void init_easy_solutions() {
+    printf("memsetting\n");
+    memset(simple_solution_counts, 0, sizeof simple_solution_counts);
 
+    printf("finding hashes\n");
     find_hashable_solutions(6);
 
-    qsort(simple_solution_hashes, simple_solution_hash_size, sizeof(U64), cmpfunc);
-//    for (int i = 0; i < simple_solution_hash_size; ++i) {
-//        printf("%d\n", simple_solution_hashes[i] >= simple_solution_hashes[i-1]);
-//    }
     printf("Found %d hashable solutions\n", four_move_hashes_found);
 }
 

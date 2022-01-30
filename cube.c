@@ -377,18 +377,6 @@ int full_is_repetition(int move){
     return 0;
 }
 
-int simple_is_repetition(int move){
-
-    if (same_side_moves[history][0] == move)
-        return 1;
-    if (same_side_moves[history][1] == move)
-        return 1;
-    if (history == move)
-        return 1;
-
-    return 0;
-}
-
 void generate_corner_twists(){
     for (U8 i = 0; i < 64; i++){
         corner_twists[i][1] = increment_corner_orientation_otf(i);
@@ -459,12 +447,5 @@ U64 get_random_U64(){
     rando |= (U64)rand();
     rando |= ((U64)rand() << 32);
     return rando;
-}
-
-void print_piece_binary(U8 piece){
-    for(int i = 0; i < 8; i++){
-        printf("%d ", ((1 << i) & piece) ? 1 : 0);
-    }
-    printf("\n");
 }
 
