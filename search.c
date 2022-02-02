@@ -15,12 +15,14 @@ int searchPath[MAX_PLY];
 int ply;
 
 void search(float depth, int extention){
+    if (ply == 1 && history == U) depth++;
+
     if (is_cube_solved()) {
         for (int i = 0; i < ply; ++i) {
             print_move(searchPath[i]);
             printf(" ");
         }
-        printf("\n");
+        printf("(%d)\n", ply);
         return;
     }
 
@@ -44,6 +46,8 @@ void search(float depth, int extention){
     memcpy(searchPathCopy, searchPath, sizeof(searchPath));
 
     for (int move = R; move <= B2; move++) {
+        if (move == B || move == BP || move == B2 || move == L2)
+            continue;
 
         if (full_is_repetition(move))
             continue;
@@ -72,7 +76,7 @@ int search_position(){
     handpos = 0;
     memset(searchPath, 0, sizeof searchPath);
 
-    for (int currentDepth = 0; currentDepth < 8; ++currentDepth) {
+    for (int currentDepth = 0; currentDepth < MAX_PLY; ++currentDepth) {
         printf("depth %d\n", currentDepth);
         reset_cube_history();
         search((float)currentDepth, 0);
