@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include "easySolutions.h"
 
-#define simple_solution_hash_size 10223620
+#define simple_solution_hash_size 12704329
 
 U64 corner_keys[8][64][64];
 U64 edge_keys[12][32][32];
