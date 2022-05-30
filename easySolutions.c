@@ -5,10 +5,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "easySolutions.h"
 
 #define simple_solution_hash_size 100000
-#define simple_solution_hash_batch_size 500
+#define simple_solution_hash_batch_size 250
 
 U64 corner_keys[8][64][64];
 U64 edge_keys[12][32][32];
@@ -53,6 +54,7 @@ void find_hashable_solutions(int depth) {
     U64 index = key % simple_solution_hash_size;
     simple_solution_hashes[index][simple_solution_counts[index]] = key;
     simple_solution_counts[index]++;
+    assert(simple_solution_counts[index] < simple_solution_hash_batch_size);
     four_move_hashes_found++;
 
     if (depth == 0) {

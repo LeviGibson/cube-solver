@@ -7,10 +7,6 @@
 #include <string.h>
 #include <stdio.h>
 
-#define UNSOLVED 5000
-
-//enum{R, L, U, D, F, B, RP, LP, UP, DP, FP, BP, R2, L2, U2, D2, F2, B2};
-
 int searchPath[MAX_PLY];
 int ply;
 
@@ -46,11 +42,18 @@ void search(float depth, int extention){
     memcpy(searchPathCopy, searchPath, sizeof(searchPath));
 
     for (int move = R; move <= M2; move++) {
+        float ds = 0;
         if (move == B || move == BP || move == B2 || move == L2)
             continue;
 
         if (full_is_repetition(move))
             continue;
+
+        if (move == F2){
+            if (searchPath[ply-2] == F2){
+                continue;
+            }
+        }
 
         make_move(move);
 
