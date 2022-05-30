@@ -6,12 +6,14 @@
 #include "easySolutions.h"
 #include <string.h>
 #include <stdio.h>
+#include <assert.h>
 
 int searchPath[MAX_PLY];
 int ply;
 
 void search(float depth, int extention){
 //    if (ply == 1 && history == U) depth++;
+    assert(ply < MAX_PLY);
 
     if (is_cube_solved()) {
         for (int i = 0; i < ply; ++i) {
@@ -33,7 +35,7 @@ void search(float depth, int extention){
 //            printf(" ");
 //        }
 //        printf("\n\n");
-        depth += 7;
+        depth += 9;
         extention = 1;
     }
 
@@ -43,15 +45,25 @@ void search(float depth, int extention){
 
     for (int move = R; move <= M2; move++) {
         float ds = 0;
+
         if (move == B || move == BP || move == B2 || move == L2)
-            continue;
+            ds += 3;
+
+        if (move == M2 || move == M) {
+            if ((searchPath[ply-2] != M) && (searchPath[ply-2] != MP) && (searchPath[ply-2] != M2)){
+                ds += 4;
+            }
+        }
 
         if (full_is_repetition(move))
             continue;
 
+        if (move == F2 || move == R2 || move == L2 || move == B2 || move == D2)
+            ds += 0.5f;
+
         if (move == F2){
             if (searchPath[ply-2] == F2){
-                continue;
+                ds += 4;
             }
         }
 
@@ -65,7 +77,7 @@ void search(float depth, int extention){
         searchPath[ply] = move;
 
         ply++;
-        search(depth-1, extention);
+        search(depth - 1 - ds, extention);
         ply--;
 
         paste_cube();
