@@ -10,6 +10,7 @@
 
 U8 corners[8];
 U8 edges[12];
+int32_t moveTransformer[21] = {R, L, U, D, F, B, RP, LP, UP, DP, FP, BP, R2, L2, U2, D2, F2, B2, M, MP, M2};
 
 int history;
 
@@ -58,7 +59,10 @@ const char *move_chars[] = {
         "U2",
         "D2",
         "F2",
-        "B2"
+        "B2",
+        "M",
+        "M'",
+        "M2"
 };
 
 U8 corner_twists[64][2];
@@ -164,7 +168,6 @@ int edge_cycles[18][5] = {
         {-1, 0, 10, 6, 7},
 };
 
-int orderedMoves[18] = {R, RP, R2, U, UP, U2, F, FP, F2, D, DP, D2, L, LP, L2, B, BP, B2};
 
 void reset_cube_history(){
     history = -1;
@@ -233,7 +236,59 @@ void parse_alg(char *alg){
     }
 }
 
+void swap(int *x, int *y){
+    int tmp = *x;
+    *x = *y;
+    *y = tmp;
+}
+
+void update_rotation(int move){
+    if (move == XP){
+        swap(&moveTransformer[U], &moveTransformer[F]);
+        swap(&moveTransformer[UP], &moveTransformer[FP]);
+        swap(&moveTransformer[U2], &moveTransformer[F2]);
+
+        swap(&moveTransformer[U], &moveTransformer[D]);
+        swap(&moveTransformer[UP], &moveTransformer[DP]);
+        swap(&moveTransformer[U2], &moveTransformer[D2]);
+
+        swap(&moveTransformer[U], &moveTransformer[B]);
+        swap(&moveTransformer[UP], &moveTransformer[BP]);
+        swap(&moveTransformer[U2], &moveTransformer[B2]);
+    }
+    if (move == X){
+        update_rotation(XP);
+        update_rotation(XP);
+        update_rotation(XP);
+    }
+    if (move == X2){
+        update_rotation(XP);
+        update_rotation(XP);
+    }
+}
+
 void make_move(int move){
+    move = moveTransformer[move];
+
+    if (move == M){
+        make_move(R);
+        make_move(LP);
+        update_rotation(XP);
+        return;
+    }
+    if (move == MP){
+        make_move(RP);
+        make_move(L);
+        update_rotation(X);
+        return;
+    }
+    if (move == M2){
+        make_move(R2);
+        make_move(L2);
+        update_rotation(X2);
+        return;
+    }
+
     U8 corner_buffer[8];
     memcpy(corner_buffer, corners, sizeof corner_buffer);
 

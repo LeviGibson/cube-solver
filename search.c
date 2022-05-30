@@ -45,7 +45,7 @@ void search(float depth, int extention){
     int searchPathCopy[MAX_PLY];
     memcpy(searchPathCopy, searchPath, sizeof(searchPath));
 
-    for (int move = R; move <= B2; move++) {
+    for (int move = R; move <= M2; move++) {
         if (move == B || move == BP || move == B2 || move == L2)
             continue;
 

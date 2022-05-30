@@ -11,8 +11,8 @@
 #define U32 unsigned int
 
 int handpos;
-enum{R, L, U, D, F, B, RP, LP, UP, DP, FP, BP, R2, L2, U2, D2, F2, B2};
-int orderedMoves[18];
+enum{R, L, U, D, F, B, RP, LP, UP, DP, FP, BP, R2, L2, U2, D2, F2, B2, M, MP, M2};
+enum{X, Y, Z, XP, YP, ZP, X2, Y2, Z2};
 
 #define encode_piece(index, orientation) \
     ((index) | ((orientation) << 4))
@@ -45,22 +45,26 @@ int orderedMoves[18];
 #define copy_cube() \
     U8 corners_copy[8];   \
     U8 edges_copy[12];    \
+    int moveTransformer_copy[21];\
     int history_copy;     \
     int handpos_copy = handpos; \
     int history2_copy = history2;\
     history_copy = history;   \
     memcpy(edges_copy, edges, sizeof(edges_copy)); \
-    memcpy(corners_copy, corners, sizeof(corners_copy)) \
+    memcpy(corners_copy, corners, sizeof(corners_copy)); \
+    memcpy(moveTransformer_copy, moveTransformer, sizeof(moveTransformer))
 
 #define paste_cube() \
     memcpy(edges, edges_copy, sizeof edges); \
     memcpy(corners, corners_copy, sizeof corners); \
     history2 = history2_copy;\
     handpos = handpos_copy;                 \
-    history = history_copy \
+    history = history_copy;                  \
+    memcpy(moveTransformer, moveTransformer_copy, sizeof(moveTransformer))\
 
 U8 corners[8];
 U8 edges[12];
+int32_t moveTransformer[21];
 
 int history;
 int history2;
