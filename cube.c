@@ -11,8 +11,11 @@
 U8 corners[8];
 U8 edges[12];
 int32_t moveTransformer[21] = {R, L, U, D, F, B, RP, LP, UP, DP, FP, BP, R2, L2, U2, D2, F2, B2, M, MP, M2};
-
-int history;
+int8_t moveToAxis[21] = {AXIS_M, AXIS_M, AXIS_E, AXIS_E, AXIS_S, AXIS_S, AXIS_M, AXIS_M, AXIS_E, AXIS_E, AXIS_S, AXIS_S,
+                       AXIS_M, AXIS_M, AXIS_E, AXIS_E, AXIS_S, AXIS_S, AXIS_M, AXIS_M, AXIS_M};
+int8_t moveToSide[21] = {SIDE_R, SIDE_L, SIDE_U, SIDE_D, SIDE_F, SIDE_B, SIDE_R, SIDE_L, SIDE_U, SIDE_D, SIDE_F, SIDE_B, SIDE_R, SIDE_L, SIDE_U, SIDE_D, SIDE_F, SIDE_B};
+int8_t axisHistory[3] = {0, 0, 0};
+int8_t sideHistory[6] = {0, 0, 0, 0, 0, 0};
 
 char corner_colors[8][3] = {
         {'Y', 'R', 'G'},
@@ -170,8 +173,8 @@ int edge_cycles[18][5] = {
 
 
 void reset_cube_history(){
-    history = -1;
-    history2 = -1;
+    memset(axisHistory, 0, sizeof(axisHistory));
+    memset(sideHistory, 0, sizeof(sideHistory));
 }
 
 void parse_alg(char *alg){
@@ -334,8 +337,10 @@ void make_move(int move){
         edges[edge_cycles[move][4]] = edge_buffer[edge_cycles[move][3]];
     }
 
-    history2 = history;
-    history = move;
+    if (!axisHistory[moveToAxis[move]])
+        reset_cube_history();
+    axisHistory[moveToAxis[move]]++;
+    sideHistory[moveToSide[move]]++;
 }
 
 int is_cube_solved(){
@@ -358,78 +363,6 @@ int is_cube_solved(){
     }
 
     return 1;
-}
-
-//R, L, U, D, F, B, RP, LP, UP, DP, FP, BP, R2, L2, U2, D2, F2, B2
-int same_side_moves[18][2] = {
-        {RP, R2},
-        {LP, L2},
-        {UP, U2},
-        {DP, D2},
-        {FP, F2},
-        {BP, B2},
-
-        {R, R2},
-        {L, L2},
-        {U, U2},
-        {D, D2},
-        {F, F2},
-        {B, B2},
-
-        {R, RP},
-        {L, LP},
-        {U, UP},
-        {D, DP},
-        {F, FP},
-        {B, BP}
-};
-
-int parralel_moves[18][3] = {
-        {L, LP, L2},
-        {R, RP, R2},
-        {D, DP, D2},
-        {U, UP, U2},
-        {B, BP, B2},
-        {F, FP, F2},
-
-        {L, LP, L2},
-        {R, RP, R2},
-        {D, DP, D2},
-        {U, UP, U2},
-        {B, BP, B2},
-        {F, FP, F2},
-
-        {L, LP, L2},
-        {R, RP, R2},
-        {D, DP, D2},
-        {U, UP, U2},
-        {B, BP, B2},
-        {F, FP, F2},
-};
-
-int full_is_repetition(int move){
-    if (history == -1) return 0;
-
-    if (same_side_moves[history][0] == move)
-        return 1;
-    if (same_side_moves[history][1] == move)
-        return 1;
-    if (history == move)
-        return 1;
-
-    if (parralel_moves[history][0] == history2 ||
-        parralel_moves[history][1] == history2 ||
-        parralel_moves[history][2] == history2){
-
-        if (same_side_moves[history2][0] == move)
-            return 1;
-        if (same_side_moves[history2][1] == move)
-            return 1;
-        if (history2 == move)
-            return 1;
-    }
-
-    return 0;
 }
 
 void generate_corner_twists(){
@@ -502,5 +435,15 @@ U64 get_random_U64(){
     rando |= (U64)rand();
     rando |= ((U64)rand() << 32);
     return rando;
+}
+
+int full_is_repetition(int move) {
+    if (move == M || move == MP || move == M2){
+        if (sideHistory[SIDE_L] || sideHistory[SIDE_R])
+            return 1;
+    } else if (sideHistory[moveToSide[move]])
+        return 1;
+
+    return 0;
 }
 

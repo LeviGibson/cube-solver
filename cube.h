@@ -13,6 +13,11 @@
 int handpos;
 enum{R, L, U, D, F, B, RP, LP, UP, DP, FP, BP, R2, L2, U2, D2, F2, B2, M, MP, M2};
 enum{X, Y, Z, XP, YP, ZP, X2, Y2, Z2};
+enum{AXIS_M, AXIS_E, AXIS_S};
+enum{SIDE_R, SIDE_L, SIDE_U, SIDE_D, SIDE_F, SIDE_B};
+
+int8_t axisHistory[3];
+int8_t sideHistory[6];
 
 #define encode_piece(index, orientation) \
     ((index) | ((orientation) << 4))
@@ -46,28 +51,27 @@ enum{X, Y, Z, XP, YP, ZP, X2, Y2, Z2};
     U8 corners_copy[8];   \
     U8 edges_copy[12];    \
     int moveTransformer_copy[21];\
-    int history_copy;     \
-    int handpos_copy = handpos; \
-    int history2_copy = history2;\
-    history_copy = history;   \
+    int8_t axisHistory_copy[3]; \
+    int8_t sideHistory_copy[6]; \
+    int handpos_copy = handpos;  \
     memcpy(edges_copy, edges, sizeof(edges_copy)); \
+    memcpy(axisHistory_copy, axisHistory, sizeof(axisHistory_copy)); \
+    memcpy(sideHistory_copy, sideHistory, sizeof(sideHistory_copy)); \
     memcpy(corners_copy, corners, sizeof(corners_copy)); \
     memcpy(moveTransformer_copy, moveTransformer, sizeof(moveTransformer))
 
 #define paste_cube() \
     memcpy(edges, edges_copy, sizeof edges); \
     memcpy(corners, corners_copy, sizeof corners); \
-    history2 = history2_copy;\
     handpos = handpos_copy;                 \
-    history = history_copy;                  \
-    memcpy(moveTransformer, moveTransformer_copy, sizeof(moveTransformer))\
+    memcpy(moveTransformer, moveTransformer_copy, sizeof(moveTransformer)); \
+    memcpy(axisHistory, axisHistory_copy, sizeof(axisHistory_copy)); \
+    memcpy(sideHistory, sideHistory_copy, sizeof(sideHistory_copy)) \
 
 U8 corners[8];
 U8 edges[12];
 int32_t moveTransformer[21];
 
-int history;
-int history2;
 
 void init_cube();
 
@@ -79,7 +83,6 @@ void parse_alg(char *alg);
 
 int is_cube_solved();
 int full_is_repetition(int move);
-int simple_is_repetition(int move);
 
 void print_move(int move);
 void print_cube();

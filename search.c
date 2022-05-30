@@ -15,7 +15,7 @@ int searchPath[MAX_PLY];
 int ply;
 
 void search(float depth, int extention){
-    if (ply == 1 && history == U) depth++;
+//    if (ply == 1 && history == U) depth++;
 
     if (is_cube_solved()) {
         for (int i = 0; i < ply; ++i) {
