@@ -18,6 +18,7 @@ enum{SIDE_R, SIDE_L, SIDE_U, SIDE_D, SIDE_F, SIDE_B};
 
 int8_t axisHistory[3];
 int8_t sideHistory[6];
+int8_t moveToSide[21];
 
 #define encode_piece(index, orientation) \
     ((index) | ((orientation) << 4))

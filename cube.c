@@ -237,6 +237,8 @@ void parse_alg(char *alg){
 
         alg++;
     }
+
+    reset_cube_history();
 }
 
 void swap(int *x, int *y){

@@ -7,14 +7,15 @@
 #include <stdlib.h>
 #include "easySolutions.h"
 
-#define simple_solution_hash_size 12704329
+#define simple_solution_hash_size 100000
+#define simple_solution_hash_batch_size 500
 
 U64 corner_keys[8][64][64];
 U64 edge_keys[12][32][32];
 int four_move_hashes_found = 0;
 
-U64 simple_solution_hashes[simple_solution_hash_size][4];
-uint8_t simple_solution_counts[simple_solution_hash_size];
+U64 simple_solution_hashes[simple_solution_hash_size][simple_solution_hash_batch_size];
+uint16_t simple_solution_counts[simple_solution_hash_size];
 
 U64 get_cube_key() {
     U64 key = 0;
@@ -29,7 +30,6 @@ U64 get_cube_key() {
 }
 
 int cmpfunc(const void *a, const void *b) {
-//    return (int) (*(U64 *) a - *(U64 *) b);
     if (*(U64 *) a > *(U64 *) b) return 1;
     if (*(U64 *) a < *(U64 *) b) return -1;
     return 0;
@@ -39,7 +39,7 @@ int cube_has_simple_solution() {
     U64 key = get_cube_key();
     U64 index = key % simple_solution_hash_size;
 
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < simple_solution_hash_batch_size; ++i) {
         if (simple_solution_hashes[index][i] == key)
             return 1;
     }
@@ -75,6 +75,7 @@ void find_hashable_solutions(int depth) {
 void init_easy_solutions() {
     printf("memsetting\n");
     memset(simple_solution_counts, 0, sizeof simple_solution_counts);
+    memset(simple_solution_hashes, 0, sizeof simple_solution_hashes);
 
     printf("finding hashes\n");
     find_hashable_solutions(6);
