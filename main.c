@@ -1,6 +1,7 @@
 #include "cube.h"
 #include "search.h"
 #include "easySolutions.h"
+#include <stdio.h>
 
 int main() {
     init_cube();

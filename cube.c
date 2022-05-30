@@ -438,6 +438,8 @@ U64 get_random_U64(){
 }
 
 int full_is_repetition(int move) {
+    move = moveTransformer[move];
+
     if (move == M || move == MP || move == M2){
         if (sideHistory[SIDE_L] || sideHistory[SIDE_R])
             return 1;
