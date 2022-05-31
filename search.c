@@ -29,12 +29,12 @@ void search(float depth, int extention){
     }
 
     if (!extention && cube_has_simple_solution()){
-//        printf("found easty solution at ply %d with hash %llx\n", ply, get_cube_key());
-//        for (int i = 0; i < ply; ++i) {
-//            print_move(searchPath[i]);
-//            printf(" ");
-//        }
-//        printf("\n%d\n", handpos);
+        printf("found easty solution at ply %d with hash %llx\n", ply, get_cube_key());
+        for (int i = 0; i < ply; ++i) {
+            print_move(searchPath[i]);
+            printf(" ");
+        }
+        printf("\n%d\n", handpos);
         depth += 9;
         extention = 1;
     }
@@ -59,8 +59,10 @@ void search(float depth, int extention){
             handpos = -handpos;
         }
 
-        if (handpos > 1 || handpos < -1)
+        if (handpos > 1 || handpos < -1) {
             ds += 4;
+            handpos = 0;
+        }
 
         if (move == B || move == BP || move == B2) {
             if (handpos != 1)
