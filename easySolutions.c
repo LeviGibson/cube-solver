@@ -53,10 +53,20 @@ int cube_has_simple_solution() {
 void find_hashable_solutions(int depth) {
     U64 key = get_cube_key();
     U64 index = key % simple_solution_hash_size;
-    simple_solution_hashes[index][simple_solution_counts[index]] = key;
-    simple_solution_counts[index]++;
-    assert(simple_solution_counts[index] < simple_solution_hash_batch_size);
-    four_move_hashes_found++;
+    int is_entered = 0;
+
+    for (int i = 0; i <= simple_solution_counts[index]; ++i) {
+        if (simple_solution_hashes[index][i] == key) {
+            is_entered = 1;
+        }
+    }
+
+    if (!is_entered) {
+        simple_solution_hashes[index][simple_solution_counts[index]] = key;
+        simple_solution_counts[index]++;
+        assert(simple_solution_counts[index] < simple_solution_hash_batch_size);
+        four_move_hashes_found++;
+    }
 
     if (depth == 0) {
         return;
