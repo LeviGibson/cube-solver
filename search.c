@@ -49,6 +49,10 @@ void search(float depth, int extention){
         if (move == B || move == BP || move == B2 || move == L2)
             ds += 3;
 
+        if (move == L || move == LP){
+            ds+=1;
+        }
+
         if (move == M2 || move == M) {
             if ((searchPath[ply-2] != M) && (searchPath[ply-2] != MP) && (searchPath[ply-2] != M2)){
                 ds += 4;
@@ -59,11 +63,22 @@ void search(float depth, int extention){
             continue;
 
         if (move == F2 || move == R2 || move == L2 || move == B2 || move == D2)
-            ds += 0.5f;
+            ds += 0.75f;
 
         if (move == F2){
-            if (searchPath[ply-2] == F2){
-                ds += 4;
+            if (searchPath[ply-2] == F2) {
+                ds += 6;
+            }
+        }
+        if (move == F2 || move == FP || move == F){
+            if (searchPath[ply-1] == RP){
+                ds-=1;
+            }
+        }
+
+        if (move == RP){
+            if (searchPath[ply-1] == R){
+                ds-=1;
             }
         }
 

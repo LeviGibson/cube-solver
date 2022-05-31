@@ -10,6 +10,7 @@
 
 #define simple_solution_hash_size 100000
 #define simple_solution_hash_batch_size 250
+#define simple_solution_depth 6
 
 U64 corner_keys[8][64][64];
 U64 edge_keys[12][32][32];
@@ -80,7 +81,7 @@ void init_easy_solutions() {
     memset(simple_solution_hashes, 0, sizeof simple_solution_hashes);
 
     printf("finding hashes\n");
-    find_hashable_solutions(6);
+    find_hashable_solutions(simple_solution_depth);
 
     printf("Found %d hashable solutions\n", four_move_hashes_found);
 }
