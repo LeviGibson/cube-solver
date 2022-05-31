@@ -9,7 +9,7 @@
 #include "easySolutions.h"
 
 #define simple_solution_hash_size 100000
-#define simple_solution_hash_batch_size 250
+#define simple_solution_hash_batch_size 500
 #define simple_solution_depth 6
 
 U64 corner_keys[8][64][64];
@@ -64,7 +64,7 @@ void find_hashable_solutions(int depth) {
 
     copy_cube();
 
-    for (int move = 0; move < 18; move++) {
+    for (int move = 0; move <= M2; move++) {
         if (!full_is_repetition(move)) {
             make_move(move);
 

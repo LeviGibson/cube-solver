@@ -34,7 +34,7 @@ void search(float depth, int extention){
 //            print_move(searchPath[i]);
 //            printf(" ");
 //        }
-//        printf("\n\n");
+//        printf("\n%d\n", handpos);
         depth += 9;
         extention = 1;
     }
@@ -44,13 +44,36 @@ void search(float depth, int extention){
     memcpy(searchPathCopy, searchPath, sizeof(searchPath));
 
     for (int move = R; move <= M2; move++) {
+        paste_cube();
         float ds = 0;
 
-        if (move == B || move == BP || move == B2 || move == L2)
-            ds += 3;
+        if (move == R)
+            handpos += 1;
+
+        if (move == RP)
+            handpos -= 1;
+
+        if (move == R2) {
+            if (handpos == 0)
+                continue;
+            handpos = -handpos;
+        }
+
+        if (handpos > 1 || handpos < -1)
+            ds += 4;
+
+        if (move == B || move == BP || move == B2) {
+            if (handpos != 1)
+                ds += 6;
+        }
+
+        if (move == L2)
+            ds += 2;
 
         if (move == L || move == LP){
             ds+=1;
+            if (searchPath[ply-1] == R || searchPath[ply-1] == RP || searchPath[ply-1] == R2)
+                ds += 6;
         }
 
         if (move == M2 || move == M) {
@@ -70,22 +93,17 @@ void search(float depth, int extention){
                 ds += 6;
             }
         }
-        if (move == F2 || move == FP || move == F){
-            if (searchPath[ply-1] == RP){
-                ds-=1;
-            }
-        }
 
-        if (move == RP){
-            if (searchPath[ply-1] == R){
-                ds-=1;
-            }
+        if (move == F2 || move == FP || move == F){
+            if (handpos == 0)
+                ds += 6;
+            if (handpos == 1)
+                ds += 4;
         }
 
         make_move(move);
 
         if (extention && !cube_has_simple_solution()) {
-            paste_cube();
             continue;
         }
 
@@ -95,10 +113,11 @@ void search(float depth, int extention){
         search(depth - 1 - ds, extention);
         ply--;
 
-        paste_cube();
         memcpy(searchPath, searchPathCopy, sizeof(searchPath));
 
     }
+
+    paste_cube();
 }
 
 int search_position(){
@@ -109,6 +128,8 @@ int search_position(){
     for (int currentDepth = 0; currentDepth < MAX_PLY; ++currentDepth) {
         printf("depth %d\n", currentDepth);
         reset_cube_history();
+        handpos = 0;
+
         search((float)currentDepth, 0);
     }
 }
